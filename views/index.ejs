@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <title>Admin Dashboard</title>
+    <style>
+      /* Add your CSS styling here */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .main {
+        padding: 20px;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        background-color: #007bff;
+        color: #fff;
+        text-align: right;
+        padding: 10px;
+      }
+      .user-info {
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+      }
+      .user-info img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-left: 10px;
+      }
+      .user-text {
+        display: flex;
+        flex-direction: column;
+      }
+      .user-text .email {
+        font-size: 0.8rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .btn {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="user-info">
+        <div class="user-text">
+          <span><%=user.name%></span>
+          <span class="email"><%=user.email%></span>
+        </div>
+        <img src="<%=user.photo%>" alt="User Photo" />
+      </div>
+    </div>
+    <div class="main">
+      <h1>Admin Dashboard</h1>
+      <h2>User Management</h2>
+
+      <!-- Change Telegram Bot Token -->
+      <h3>Change Telegram Bot Settings</h3>
+      <form id="intervalForm" style="margin-top: 10px">
+        <input
+          type="text"
+          id="newInterval"
+          placeholder="New Weather Update Interval"
+        />
+        <button type="button" class="btn" onclick="changeInterval()">
+          Change Interval
+        </button>
+      </form>
+
+      <!-- User Table -->
+      <h3>User Table</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Chat ID</th>
+            <th>Location</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let i = 0; i < users.length; i++) { %>
+          <tr>
+            <td><%= users[i].chatId %></td>
+            <td><%= users[i].location %></td>
+            <td>
+              <button class="btn" onclick="blockUser('<%=users[i].id%>')">
+                Block
+              </button>
+              <button class="btn" onclick="removeUser('<%=users[i].id%>')">
+                Remove
+              </button>
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function blockUser(userId) {
+        // Display a confirmation dialog
+        if (confirm(`Are you sure you want to block user with ID ${userId}?`)) {
+          // Send a POST request to block the user
+          $.post("/block", { id: userId }, function (data) {
+            // Handle the response from the server here (if needed)
+            console.log(`User with ID ${userId} has been blocked`);
+
+            // Refresh the page after the user clicks "OK" on the confirmation dialog
+            location.reload();
+          }).fail(function (error) {
+            // Handle any errors that occur during the request
+            console.error(
+              `Error bloking user with ID ${userId}: ${error.statusText}`
+            );
+          });
+        }
+      }
+
+      function removeUser(userId) {
+        // Display a confirmation dialog
+        if (
+          confirm(`Are you sure you want to remove user with ID ${userId}?`)
+        ) {
+          // Send a POST request to block the user
+          $.post("/remove", { id: userId }, function (data) {
+            // Handle the response from the server here (if needed)
+            console.log(`User with ID ${userId} has been removed`);
+
+            // Refresh the page after the user clicks "OK" on the confirmation dialog
+            location.reload();
+          }).fail(function (error) {
+            // Handle any errors that occur during the request
+            console.error(
+              `Error removing user with ID ${userId}: ${error.statusText}`
+            );
+          });
+        }
+      }
+
+      function changeInterval() {
+        const newInterval = document.getElementById("newInterval").value;
+        // Display a confirmation dialog
+        if (confirm(`Are you sure you want to change the bot interval?`)) {
+          // Send a POST request to block the user
+          $.post("/update-interval/" + newInterval, function (data) {
+            // Handle the response from the server here (if needed)
+            alert(`Bot interval updated`);
+
+            // Refresh the page after the user clicks "OK" on the confirmation dialog
+          }).fail(function (error) {
+            // Handle any errors that occur during the request
+            alert(`Error updating bot interval`);
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+[
+    {
+      location: {
+        name: 'Noida, India',
+        zipcode: undefined,
+        lat: '28.585',
+        long: '77.352',
+        timezone: '5.5',
+        alert: '',
+        degreetype: 'C',
+        imagerelativeurl: 'http://blob.weather.microsoft.com/static/weather4/en-us/'
+      },
+      current: {
+        temperature: '35',
+        skycode: '21',
+        skytext: 'Haze',
+        date: '2023-10-07',
+        observationtime: '16:48:25',
+        observationpoint: 'Noida, India',
+        feelslike: '42',
+        humidity: '48',
+        winddisplay: '6 km/h West',
+        day: 'Saturday',
+        shortday: 'Sat',
+        windspeed: '6 km/h',
+        imageUrl: 'http://blob.weather.microsoft.com/static/weather4/en-us/law/21.gif'
+      },
+      forecast: [ [Object], [Object], [Object], [Object], [Object] ]
+    }
+  ]
